@@ -1,19 +1,24 @@
-{% extends 'main/base.html' %}
-{% block title %}
-View list
-{% endblock %}
 
+{% extends "main/base.html" %}
+{% block title %}View List{% endblock %}
 
 {% block content %}
-<h1>{{ list.name }}</h1>
+    <h1>{{ls.name}}</h1>
+    <form method="post" action="#">
+    {% csrf_token %}
         <ul>
             {% for item in items %}
                 {% if item.complete == True %}
-                    <li>{{ item.text }} - COMPLETE</li>
+                    <li><input type="checkbox", value="clicked",
+                               name="c{{item.id}}" checked> {{item.text}}</li>
                 {% else %}
-                     <li>{{ item.text }} - INCOMPLETE</li>
+                    <li><input type="checkbox", value="clicked",
+                               name="c{{item.id}}"> {{item.text}}</li>
                 {% endif %}
             {% endfor %}
         </ul>
-
+                <button type="submit", name="save", value="save">Save</button><br><br>
+               <p><input type="text", name="new">
+                <button type="submit", name="newItem", value="newItem">Add Item</button></p>
+    </form>
 {% endblock %}
