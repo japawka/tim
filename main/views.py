@@ -4,6 +4,7 @@ from .models import ToDoList, Item
 from .forms import CreateNewList
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login, authenticate
+from django.contrib.auth.decorators import login_required
 
 
 
@@ -46,7 +47,7 @@ def home(request):
 #         form.save()
 #         return redirect(all)
 #     return render(request, "main/create.html", {"form": form})
-
+@login_required
 def create(request):
     if request.method == "POST":
         form = CreateNewList(request.POST)
