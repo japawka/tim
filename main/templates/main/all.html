@@ -1,0 +1,20 @@
+{% extends 'main/base.html' %}
+{% block title %}
+Wszystkie To Do
+{% endblock %}
+
+
+{% block content %}
+<h1> All To Do Lists </h1>
+    <ul>
+        {% for todo in todos %}
+
+            <li>
+
+                <a href="{% url 'index' todo.id %}">{{ todo.name }}</a></h5>
+            </li>
+
+        {% endfor %}
+    </ul>
+
+{% endblock %}
