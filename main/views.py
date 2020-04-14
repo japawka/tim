@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from .models import ToDoList, Item
 from .forms import CreateNewList
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login, authenticate
 
 
 
@@ -38,18 +40,44 @@ def index(request, id):
 def home(request):
     return render(request, 'main/home.html', {})
 
+# def create(request):
+#     form = CreateNewList(request.POST or None)
+#     if form.is_valid():
+#         form.save()
+#         return redirect(all)
+#     return render(request, "main/create.html", {"form": form})
+
 def create(request):
-    form = CreateNewList(request.POST or None)
-    if form.is_valid():
-        form.save()
-        return redirect(all)
-    return render(request, "main/create.html", {"form": form})
+    if request.method == "POST":
+        form = CreateNewList(request.POST)
 
+        if form.is_valid():
+            n = form.cleaned_data["name"]
+            t = ToDoList(name=n)
+            t.save()
+            request.user.todolist.add(t)  # adds the to do list to the current logged in user
 
+            return HttpResponseRedirect("/%i" %t.id)
+
+    else:
+        form = CreateNewList()
+    return render(request, "main/create.html", {"form":form})
 
 def all(request):
-     todos = ToDoList.objects.all()
-     context = {
-         'todos': todos
-     }
-     return render(request, 'main/all.html', context)
+    return render(request, "main/all.html", {})
+     # todos = ToDoList.objects.all()
+     # context = {
+     #     'todos': todos
+     # }
+     # return render(request, 'main/all.html', context)
+
+def register(request):
+    form = UserCreationForm(request.POST)
+    if form.is_valid():
+        form.save()
+        username = form.cleaned_data.get('username')
+        password = form.cleaned_data.get('password1')
+        user = authenticate(username=username, password=password)
+        login(request, user)
+        return redirect(all)
+    return render(request, 'main/register.html', {'form': form})

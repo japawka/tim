@@ -1,0 +1,20 @@
+{% extends 'main/l_base.html' %}
+{% block tytul %} Zaloguj się {% endblock %}
+
+{% block content %}
+
+    <div class="card" style="width: 26rem;">
+      <div class="card-body">
+        <h5 class="card-title">Zaloguj się</h5>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary">Zaloguj się <i
+                    class="fas fa-sign-in-alt"></i></button>
+        </form>
+          lub<br>
+            <a href="{% url 'register' %}" class="btn btn-success">
+                   Zarejestruj się <i class="fas fa-sign-in-alt"></i></a>
+      </div>
+    </div>
+{% endblock %}

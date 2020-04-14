@@ -7,7 +7,7 @@ Wszystkie To Do
 {% block content %}
 <h1> All To Do Lists </h1>
     <ul>
-        {% for todo in todos %}
+        {% for todo in user.todolist.all %}
 
             <li>
 
